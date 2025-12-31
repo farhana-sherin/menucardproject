@@ -34,7 +34,7 @@ export default function QrCode() {
             // Add Link Text
             pdf.setFontSize(12);
             pdf.setTextColor(100);
-            pdf.text(menuLink, pdfWidth / 2, y + imgHeight + 10, { align: "center" });
+            // Link Removed as per request
 
             // Add Footer
             pdf.setFontSize(10);
@@ -85,10 +85,6 @@ export default function QrCode() {
                             excavate: true,
                         }}
                     />
-                </div>
-
-                <div className="text-sm text-gray-500 mb-6 font-mono bg-gray-800/50 py-2 px-4 rounded-lg inline-block break-all">
-                    {menuLink}
                 </div>
 
                 <button
