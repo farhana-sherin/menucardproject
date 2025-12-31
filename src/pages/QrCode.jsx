@@ -1,12 +1,21 @@
 import React from "react";
-import { QRCodeSVG } from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 import { motion } from "framer-motion";
 
 export default function QrCode() {
     const menuLink = `${window.location.origin}/home`;
 
-    const handlePrint = () => {
-        window.print();
+    const handleDownload = () => {
+        const canvas = document.getElementById("qr-code-canvas");
+        if (canvas) {
+            const pngUrl = canvas.toDataURL("image/png");
+            const downloadLink = document.createElement("a");
+            downloadLink.href = pngUrl;
+            downloadLink.download = "menu-qr-code.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
     };
 
     return (
@@ -35,7 +44,8 @@ export default function QrCode() {
                 </div>
 
                 <div className="bg-white p-4 rounded-xl inline-block shadow-inner mb-8">
-                    <QRCodeSVG
+                    <QRCodeCanvas
+                        id="qr-code-canvas"
                         value={menuLink}
                         size={250}
                         level={"H"}
@@ -55,40 +65,19 @@ export default function QrCode() {
                 </div>
 
                 <button
-                    onClick={handlePrint}
+                    onClick={handleDownload}
                     className="w-full py-3 px-6 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center"
                 >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    Print QR Code
+                    Download QR Code
                 </button>
             </motion.div>
 
             <p className="mt-8 text-gray-500 text-sm relative z-10">
                 © 2025 Premium Menu. All Rights Reserved.
             </p>
-
-            {/* Print Styles */}
-            <style>{`
-            @media print {
-                body * {
-                    visibility: hidden;
-                }
-                .min-h-screen {
-                    background: white !important;
-                }
-                #root, #root * {
-                    visibility: visible;
-                }
-                button {
-                    display: none;
-                }
-                p.text-gray-500 {
-                    color: black !important;
-                }
-            }
-        `}</style>
         </div>
     );
 }
