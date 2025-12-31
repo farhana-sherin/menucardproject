@@ -54,8 +54,8 @@ export default function Home() {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`px-6 py-2 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${activeCategory === cat
-                    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/25 scale-105"
-                    : "bg-gray-800/50 text-gray-400 border border-gray-700/50 hover:border-orange-500/30 hover:text-white"
+                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/25 scale-105"
+                  : "bg-gray-800/50 text-gray-400 border border-gray-700/50 hover:border-orange-500/30 hover:text-white"
                   }`}
               >
                 {cat.toUpperCase()}
@@ -70,8 +70,8 @@ export default function Home() {
                 key={type}
                 onClick={() => setActiveType(type)}
                 className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-300 capitalize ${activeType === type
-                    ? "bg-gray-800 text-orange-400 shadow-sm"
-                    : "text-gray-500 hover:text-gray-300"
+                  ? "bg-gray-800 text-orange-400 shadow-sm"
+                  : "text-gray-500 hover:text-gray-300"
                   }`}
               >
                 {type === 'veg' ? 'Veg 🌱' : type === 'non-veg' ? 'Non-Veg 🍗' : 'All'}
