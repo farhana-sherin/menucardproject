@@ -1,6 +1,7 @@
 import React from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { motion } from "framer-motion";
+import { jsPDF } from "jspdf";
 
 export default function QrCode() {
     const menuLink = `${window.location.origin}/home`;
@@ -8,13 +9,39 @@ export default function QrCode() {
     const handleDownload = () => {
         const canvas = document.getElementById("qr-code-canvas");
         if (canvas) {
-            const pngUrl = canvas.toDataURL("image/png");
-            const downloadLink = document.createElement("a");
-            downloadLink.href = pngUrl;
-            downloadLink.download = "menu-qr-code.png";
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF({
+                orientation: "portrait",
+                unit: "mm",
+                format: "a4",
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = 60; // Size of QR code in mm
+            const imgHeight = 60;
+            const x = (pdfWidth - imgWidth) / 2;
+            const y = (pdfHeight - imgHeight) / 2;
+
+            // Add Title
+            pdf.setFontSize(24);
+            pdf.setTextColor(255, 100, 0); // Orange color
+            pdf.text("Scan for Menu", pdfWidth / 2, y - 20, { align: "center" });
+
+            // Add QR Code
+            pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+
+            // Add Link Text
+            pdf.setFontSize(12);
+            pdf.setTextColor(100);
+            pdf.text(menuLink, pdfWidth / 2, y + imgHeight + 10, { align: "center" });
+
+            // Add Footer
+            pdf.setFontSize(10);
+            pdf.setTextColor(150);
+            pdf.text("© 2025 Premium Menu", pdfWidth / 2, pdfHeight - 20, { align: "center" });
+
+            pdf.save("menu-qr.pdf");
         }
     };
 
@@ -69,9 +96,9 @@ export default function QrCode() {
                     className="w-full py-3 px-6 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center"
                 >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    Download QR Code
+                    Download as PDF
                 </button>
             </motion.div>
 
